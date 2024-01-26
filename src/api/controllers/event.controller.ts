@@ -1,10 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { EventService } from 'src/service/event.service';
 import { CreateEventDto } from '../request/createEvent.dto';
 import { UpdateEventDto } from '../request/updateEvent.dto';
 import { SearchEventQuery } from '../request/searchEvent.query';
+import { AuthGuard } from 'src/utils/guards/auth.guard';
 
 @Controller("/event")
+@UseGuards(AuthGuard)
 export class EventController {
   constructor(private eventService: EventService) {}
 

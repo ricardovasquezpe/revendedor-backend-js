@@ -6,7 +6,7 @@ import {
   EventSchema,
 } from 'src/repository/mongodb/schemas/event.schema';
 import { EventRepository } from 'src/repository/mongodb/event.repository';
-import { EventProfile } from 'src/profiles/event.profile';
+import { EventProfile } from 'src/utils/profiles/event.profile';
 import { Artist, ArtistSchema } from 'src/repository/mongodb/schemas/artist.schema';
 
 @Module({
