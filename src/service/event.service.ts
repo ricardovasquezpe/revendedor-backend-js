@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateEventDto } from 'src/api/request/createEvent.dto';
 import { UpdateEventDto } from 'src/api/request/updateEvent.dto';
 import { EventDto } from 'src/api/response/event.dto';
-import { EventRepository } from 'src/repository/event.repository';
+import { EventRepository } from 'src/repository/mongodb/event.repository';
 import { Event } from 'src/repository/mongodb/schemas/event.schema';
 
 @Injectable()
@@ -53,5 +53,22 @@ export class EventService {
       Event,
       EventDto
     );
+  }
+
+  async searchEvents(params: any): Promise<any> {
+    var skip = params.skip;
+    var limit = params.limit;
+    delete params.skip;
+    delete params.limit;
+
+    return {
+      data: this.classMapper.mapArray(
+        await this.eventRepository.searchWithPagination(params, skip, limit),
+        Event,
+        EventDto
+      ),
+      limit: limit,
+      skip: skip
+    }
   }
 }

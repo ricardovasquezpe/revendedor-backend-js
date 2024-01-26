@@ -22,4 +22,12 @@ export class BaseRepository<T> {
   async deleteById(id: any): Promise<T>{
     return await this.repository.findByIdAndDelete(id);
   }
+
+  async search(query: any): Promise<T[]>{
+    return await this.repository.find(query);
+  }
+  
+  async searchWithPagination(query: any, skip: number, limit: number): Promise<T[]>{
+    return await this.repository.find(query).limit(limit).skip(skip);
+  }
 }

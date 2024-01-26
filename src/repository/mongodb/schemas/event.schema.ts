@@ -1,5 +1,7 @@
 import { AutoMap } from '@automapper/classes';
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { SchemaTypes } from 'mongoose';
+import { Artist } from './artist.schema';
 
 export type EventDocument = Event & Document;
 
@@ -15,6 +17,10 @@ export class Event {
   @AutoMap()
   @Prop()
   description: string;
+  
+  @AutoMap()
+  @Prop({ type: SchemaTypes.ObjectId, ref: Artist.name })
+  artistId: string;
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);

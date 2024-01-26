@@ -12,4 +12,9 @@ export class CreateEventDto {
   @IsString()
   @MinLength(1)
   readonly description: string;
+  @AutoMap()
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(1)
+  readonly artistId: string;
 }
