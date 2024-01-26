@@ -2,6 +2,7 @@ import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { CreateEventDto } from 'src/api/request/createEvent.dto';
+import { UpdateEventDto } from 'src/api/request/updateEvent.dto';
 import { EventDto } from 'src/api/response/event.dto';
 import { EventRepository } from 'src/repository/event.repository';
 import { Event } from 'src/repository/mongodb/schemas/event.schema';
@@ -12,7 +13,8 @@ export class EventService {
     private readonly eventRepository: EventRepository,
     @InjectMapper() private readonly classMapper: Mapper,
   ) {}
-  async getEvents(): Promise<any> {
+
+  async getEvents(): Promise<any[]> {
     return this.classMapper.mapArray(
       await this.eventRepository.find(),
       Event,
@@ -26,6 +28,30 @@ export class EventService {
       await this.eventRepository.create(entity),
       Event,
       EventDto,
+    );
+  }
+
+  async getEventById(id: string): Promise<any>{
+    return this.classMapper.map(
+      await this.eventRepository.findById(id),
+      Event,
+      EventDto
+    );
+  }
+
+  async updateEventById(id: string, payload: UpdateEventDto): Promise<any>{
+    return this.classMapper.map(
+      await this.eventRepository.updateById(id, payload),
+      Event,
+      EventDto
+    );
+  }
+
+  async deleteEventById(id: string){
+    return this.classMapper.map(
+      await this.eventRepository.deleteById(id),
+      Event,
+      EventDto
     );
   }
 }

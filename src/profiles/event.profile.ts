@@ -1,4 +1,4 @@
-import { Mapper, createMap } from '@automapper/core';
+import { Mapper, createMap, forMember, ignore, mapFrom } from '@automapper/core';
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { CreateEventDto } from 'src/api/request/createEvent.dto';
 import { EventDto } from 'src/api/response/event.dto';
@@ -12,7 +12,7 @@ export class EventProfile extends AutomapperProfile {
   override get profile() {
     return (mapper) => {
       createMap(mapper, CreateEventDto, Event);
-      createMap(mapper, Event, EventDto);
+      createMap(mapper, Event, EventDto, forMember((dest) => dest._id, mapFrom((source) => String(source._id))),);
     };
   }
 }

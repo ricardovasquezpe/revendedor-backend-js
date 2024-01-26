@@ -6,6 +6,9 @@ export type EventDocument = Event & Document;
 @Schema()
 export class Event {
   @AutoMap()
+  _id: string;
+
+  @AutoMap()
   @Prop()
   title: string;
 
