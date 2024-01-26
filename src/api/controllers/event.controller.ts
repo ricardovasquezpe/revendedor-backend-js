@@ -1,12 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UnprocessableEntityException, UseGuards, UseInterceptors } from '@nestjs/common';
 import { EventService } from 'src/service/event.service';
 import { CreateEventDto } from '../request/createEvent.dto';
 import { UpdateEventDto } from '../request/updateEvent.dto';
 import { SearchEventQuery } from '../request/searchEvent.query';
 import { AuthGuard } from 'src/utils/guards/auth.guard';
+import { ExceptionInterceptor } from 'src/utils/interceptors/exception.interceptor';
 
 @Controller("/event")
 @UseGuards(AuthGuard)
+@UseInterceptors(ExceptionInterceptor)
 export class EventController {
   constructor(private eventService: EventService) {}
 
