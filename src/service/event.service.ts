@@ -32,11 +32,7 @@ export class EventService {
   }
 
   async getEventById(id: string): Promise<any>{
-    return this.classMapper.map(
-      await this.eventRepository.findById(id),
-      Event,
-      EventDto
-    );
+    return this.eventRepository.getEventById(id);
   }
 
   async updateEventById(id: string, payload: UpdateEventDto): Promise<any>{

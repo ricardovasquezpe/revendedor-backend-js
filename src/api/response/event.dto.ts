@@ -7,4 +7,8 @@ export class EventDto {
   readonly title: string;
   @AutoMap()
   readonly description: string;
+  @AutoMap()
+  readonly artistId: string;
+  @AutoMap()
+  readonly artist: any
 }

@@ -12,7 +12,11 @@ export class EventProfile extends AutomapperProfile {
   override get profile() {
     return (mapper) => {
       createMap(mapper, CreateEventDto, Event);
-      createMap(mapper, Event, EventDto, forMember((dest) => dest._id, mapFrom((source) => String(source._id))),);
+      createMap(mapper, 
+        Event, 
+        EventDto, 
+        forMember((dest) => dest._id, mapFrom((source) => String(source._id))),
+        forMember((dest) => dest.artistId, mapFrom((source) => String(source.artistId))));
     };
   }
 }
