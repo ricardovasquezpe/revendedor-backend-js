@@ -1,6 +1,7 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
-import { Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateEventDto } from 'src/api/request/event/createEvent.dto';
 import { UpdateEventDto } from 'src/api/request/event/updateEvent.dto';
 import { EventDto } from 'src/api/response/event.dto';
@@ -12,11 +13,19 @@ export class EventService {
   constructor(
     private readonly eventRepository: EventRepository,
     @InjectMapper() private readonly classMapper: Mapper,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
 
-  async getEvents(): Promise<any[]> {
+  async getEvents(){
+    var cachedData = await this.cacheManager.get('listEventsFindAll');
+    if(cachedData){
+      return cachedData;
+    }
+
+    var list = await this.eventRepository.find();
+    await this.cacheManager.set('listEventsFindAll', list, 60000);
     return this.classMapper.mapArray(
-      await this.eventRepository.find(),
+      list,
       Event,
       EventDto,
     );

@@ -5,36 +5,18 @@ import { AutomapperModule } from '@automapper/nestjs';
 import { classes } from '@automapper/classes';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService, ConfigModule } from '@nestjs/config';
+import { CacheModule } from '@nestjs/cache-manager';
+import { RedisOptions } from './config/redisOptions';
+import { MongoOptions } from './config/mongoOptions';
+import { TypeOrmOptions } from './config/typeOrmOptions';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true
-    }),
-    MongooseModule.forRootAsync(
-      {
-        inject: [ConfigService],
-        useFactory: (configService: ConfigService) => ({
-          uri: configService.get<string>('MONGO_URL')
-        })
-      }
-    ),
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'mysql',
-        host: 'localhost',
-        port: 3306,
-        username: 'root',
-        password: '123456',
-        database: 'rvdor_users',
-        autoLoadEntities: true,
-        synchronize: true
-      })
-    }),
-    AutomapperModule.forRoot({
-      strategyInitializer: classes(),
-    }),
+    ConfigModule.forRoot({ isGlobal: true }),
+    CacheModule.registerAsync(RedisOptions),
+    MongooseModule.forRootAsync(MongoOptions),
+    TypeOrmModule.forRootAsync(TypeOrmOptions),
+    AutomapperModule.forRoot({ strategyInitializer: classes()}),
     BaseModule,
   ],
   providers: [],
