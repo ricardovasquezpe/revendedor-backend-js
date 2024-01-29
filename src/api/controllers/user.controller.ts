@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post, UseGuards, UseInterceptors } from "@nestjs
 import { UserService } from "src/service/user.service";
 import { AuthGuard } from "src/utils/guards/auth.guard";
 import { ExceptionInterceptor } from "src/utils/interceptors/exception.interceptor";
-import { CreateUserDto } from "../request/createUser.dto";
+import { CreateUserDto } from "../request/user/createUser.dto";
 
 @Controller("/user")
 /*@UseGuards(AuthGuard)*/

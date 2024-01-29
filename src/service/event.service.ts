@@ -1,8 +1,8 @@
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
-import { CreateEventDto } from 'src/api/request/createEvent.dto';
-import { UpdateEventDto } from 'src/api/request/updateEvent.dto';
+import { CreateEventDto } from 'src/api/request/event/createEvent.dto';
+import { UpdateEventDto } from 'src/api/request/event/updateEvent.dto';
 import { EventDto } from 'src/api/response/event.dto';
 import { EventRepository } from 'src/repository/mongodb/event.repository';
 import { Event } from 'src/repository/mongodb/schemas/event.schema';
