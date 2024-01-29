@@ -11,13 +11,14 @@ import { Artist, ArtistSchema } from 'src/repository/mongodb/schemas/artist.sche
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntitiy } from 'src/repository/mysql/entity/user.entity';
 import { UserService } from './user.service';
+import { UserRepository } from 'src/repository/mysql/user.repository';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Event.name, schema: EventSchema }, { name: Artist.name, schema: ArtistSchema }]),
     TypeOrmModule.forFeature([UserEntitiy])
   ],
-  providers: [EventProfile, EventRepository, EventService, UserService],
+  providers: [EventProfile, EventRepository, UserRepository, EventService, UserService],
   exports: [EventService, UserService],
 })
 export class ServiceModule {}

@@ -2,25 +2,21 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { CreateUserDto } from "src/api/request/createUser.dto";
 import { UserEntitiy } from "src/repository/mysql/entity/user.entity";
+import { UserRepository } from "src/repository/mysql/user.repository";
 import { Repository } from "typeorm";
 
 @Injectable()
 export class UserService {
     constructor(
-        @InjectRepository(UserEntitiy) private userRepository: Repository<UserEntitiy>,
+        //@InjectRepository(UserEntitiy) private userRepository: Repository<UserEntitiy>,
+        private readonly userRepository: UserRepository,
       ) {}
 
     getUsers() {
-        return this.userRepository.find();
+        return this.userRepository.findAll();
     }
 
     insertUser(dto: CreateUserDto){
-        console.log(dto.birthday);
-        console.log(dto.birthday.getDay);
-        console.log(dto.birthday.getMonth);
-        console.log(dto.birthday.getFullYear);
-        const newUser = this.userRepository.create(dto);
-        console.log(newUser);
-        return this.userRepository.save(newUser);
+        return this.userRepository.create(dto);
     }
 }
