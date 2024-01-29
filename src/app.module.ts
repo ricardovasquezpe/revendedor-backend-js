@@ -4,22 +4,33 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AutomapperModule } from '@automapper/nestjs';
 import { classes } from '@automapper/classes';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntitiy } from './repository/mysql/entity/user.entity';
+import { ConfigService, ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://ricardovasquezpe:1029384756@cluster0.2dye5f8.mongodb.net/?retryWrites=true&w=majority',
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
+    MongooseModule.forRootAsync(
+      {
+        inject: [ConfigService],
+        useFactory: (configService: ConfigService) => ({
+          uri: configService.get<string>('MONGO_URL')
+        })
+      }
     ),
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '123456',
-      database: 'rvdor_users',
-      autoLoadEntities: true,
-      synchronize: true
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: 'localhost',
+        port: 3306,
+        username: 'root',
+        password: '123456',
+        database: 'rvdor_users',
+        autoLoadEntities: true,
+        synchronize: true
+      })
     }),
     AutomapperModule.forRoot({
       strategyInitializer: classes(),
