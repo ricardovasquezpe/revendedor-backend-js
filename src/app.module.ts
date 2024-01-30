@@ -4,7 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AutomapperModule } from '@automapper/nestjs';
 import { classes } from '@automapper/classes';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigService, ConfigModule } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
 import { RedisOptions } from './config/redisOptions';
 import { MongoOptions } from './config/mongoOptions';

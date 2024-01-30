@@ -1,15 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UnprocessableEntityException, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query, UnprocessableEntityException, UseGuards, UseInterceptors } from '@nestjs/common';
 import { EventService } from 'src/service/event.service';
 import { CreateEventDto } from '../request/event/createEvent.dto';
 import { UpdateEventDto } from '../request/event/updateEvent.dto';
 import { SearchEventQuery } from '../request/event/searchEvent.query';
-import { AuthGuard } from 'src/utils/guards/auth.guard';
 import { ExceptionInterceptor } from 'src/utils/interceptors/exception.interceptor';
+import { AuthGuard } from 'src/utils/guards/auth.guard';
 
 @Controller("/event")
 @UseGuards(AuthGuard)
 @UseInterceptors(ExceptionInterceptor)
-export class EventController {
+export class EventsController {
   constructor(private eventService: EventService) {}
 
   @Get('/')
@@ -17,14 +17,16 @@ export class EventController {
     return this.eventService.getEvents();
   }
 
-  @Post('/')
+  @Post('/create')
   public create(@Body() dto: CreateEventDto) {
     return this.eventService.insertEvent(dto);
   }
 
   @Get('/findById/:id')
-  public findById(@Param('id') id) {
-    return this.eventService.getEventById(id);
+  public async findById(@Param('id') id) {
+    var event = await this.eventService.getEventById(id);
+    if (!event) throw new NotFoundException('Event does not exist');  
+    return event;
   }
 
   @Get('/search')

@@ -41,7 +41,8 @@ export class EventService {
   }
 
   async getEventById(id: string): Promise<any>{
-    return this.eventRepository.getEventById(id);
+    var result = await this.eventRepository.getEventById(id)
+    return (result.length > 0) ?  result[0] : null;
   }
 
   async updateEventById(id: string, payload: UpdateEventDto): Promise<any>{
